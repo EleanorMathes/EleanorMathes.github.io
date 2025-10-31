@@ -50,25 +50,24 @@ The following page contains visualizations of the sale data of 16599 video games
     var BAR_WIDTH = 50;
     var MAX_BAR_HEIGHT = 100;
 
-    d3.csv('vgsales.csv', function(d) 
+    d3.csv('vgsales.csv', function(data) 
 		{
       
       //selecting the first 5 games, getting the name of the game and number of global sales and putting them into arrays
       for (var i=0; i < 5; i++) 
 			{
-        var rankNum = d[i];
-        console.log(rankNum)
+        var rankNum = data[i];
         var name = rankNum.Name;
 				var sales = rankNum.Global_Sales;
 
         
         highNames.push(name)
-        highSales.push(+sales)
+        highSales.push(sales)
 
 			} 
         
     })
-      
+
       console.log(highNames)
       console.log(highSales)
       var maxValue = d3.max(highSales);
