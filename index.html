@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+ 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <style>
+    	text { 
+			font-family: Arial; 
+			font-size: 15px;
+		}
+		.axis path, .axis line {
+			fill: none;
+			stroke: black;
+			shape-rendering: crispEdges;
+		}
+		.tick text {
+			fill: black;
+			font-size: 11px;
+		}
+
+		rect {
+			stroke: white;
+		}
+	  </style>
+    <title>Video Game Sales</title>
+</head>
+<body>
+The following page contains visualizations of the sale data of 16599 video games released between 1980 and 2020<br>
+<p><a href="https://pages.github.iu.edu/elmathes/elmathes.github.io/Documentation.html">Documentation</a></p>
+<p><a href="https://www.kaggle.com/datasets/anandshaw2001/video-game-sales">Data Source</a></p>
+
+<!-- Question 1: -->
+
+  <svg id="svg1" width="400" height="200">
+    
+    <text id='label' x="20" y="20">Top 5 best selling video games:</text>
+    <g id="chart1" transform="translate(20,40)">
+
+
+    </g>
+  </svg>
+
+  
+  <script type="text/javascript">
+    //Question 1 Script
+    
+    var highNames = [ ];
+    var highSales = [ ];
+
+    var BAR_WIDTH = 50;
+    var MAX_BAR_HEIGHT = 100;
+
+    d3.csv('vgsales.csv', function(d) 
+		{
+      
+      //selecting the first 5 games, getting the name of the game and number of global sales and putting them into arrays
+      for (var i=0; i < 5; i++) 
+			{
+        var rankNum = d[i];
+        console.log(rankNum)
+        var name = rankNum.Name;
+				var sales = rankNum.Global_Sales;
+
+        
+        highNames.push(name)
+        highSales.push(+sales)
+
+			} 
+        
+    })
+      
+      console.log(highNames)
+      console.log(highSales)
+      var maxValue = d3.max(highSales);
+        
+
+
+        var chart1 = d3.select("#svg1").select("#chart1").selectAll('rect').data(highSales);
+
+        //-----Not Creating rect element-----
+        var chart1Rectangles = chart1.enter().append('rect');
+        
+
+        chart1Rectangles.attr('width', BAR_WIDTH)
+
+        chart1Rectangles.attr('x', function(d, i) {
+          return (i * BAR_WIDTH) + 15;
+        })
+
+        //-----NaN Error-----
+        chart1Rectangles.attr('height', function(d) {
+          var n = d / maxValue
+          return n * MAX_BAR_HEIGHT;
+        })
+
+        //-----NaN Error-----
+        chart1Rectangles.attr('y', function(d) {
+          var n = 1 - (d / maxValue);
+          return n * MAX_BAR_HEIGHT;
+        })
+    
+ 
+  </script>
+  
+</body>
+</html>
